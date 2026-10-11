@@ -62,10 +62,34 @@ app.use((err,req,res,next) => {
 
 - Why is `express.Router()` used in Express.js applications, and how does it benefit the code structure?
 
+   A: The express.Router() is a way to separate functionalities from the main page, while still being able to communicate
+   between each other. Separating them keeps code organized and not creating complex code design.
+
+
 **7. Error Handling in Express.js**
 
 - How would you implement error handling in the Express routes to ensure that any issues (such as file not found or server errors) are appropriately handled? Provide an example.
 
+   A: Include a throw inside routes, when needed to handle, and implement an error handling function that receives the message to then
+   appropriately display the error. 
+   
+   For instance: a user tries to access a POST request route, but doesn't provide a body parameter. So, an error exception is returned
+   with next function. This will then be received by the error handling function.
+
+   
+   app.post('/login', (req, res, next) => {
+         const user = req.body
+
+         if(!user){
+            return next(new Error("Missing user information"))
+         }
+         res.json(user)
+   })
+
+   app.use((err,req,res,next) => {
+      res.status(500).send("Server Error");
+   });
+   
 ---
 
 #### Section C: Bonus
@@ -73,6 +97,9 @@ app.use((err,req,res,next) => {
 **7. Dynamic Port Binding in Express.js**
 
 - Explain how the `app.listen(process.env.port || 8081)` line works and why it's useful in production environments.
+
+   A: The line works by providing two different ports when listening. If the first one is not provided, port 8081 serves in a way as a
+   backup to replace the non-provided port. This is useful to prevent production from runtime errors.
 
 ---
 # Submission Guideline
@@ -121,7 +148,7 @@ app.use((err,req,res,next) => {
      git init
      git add .
      git commit -m "Initial commit"
-     ```
+     ``` 
 
    - Link the GitHub repository:
 
